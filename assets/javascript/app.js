@@ -22,13 +22,11 @@ $(document).ready(function() {
         let trainName = $(`#name-input`).val().trim();
         let destination = $(`#destination-input`).val().trim();
         let firstTime = $(`#time-input`).val().trim();
-        let uniFirst = moment(`${firstTime}`, `x`);
         let frequency = $(`#frequency-input`).val().trim();
 
         console.log(trainName);
         console.log(destination);
         console.log(firstTime);
-        console.log(uniFirst);
         console.log(frequency);
         
         // Provides initial data to Firebase database
@@ -51,13 +49,14 @@ $(document).ready(function() {
         let pFreq = $(`<p>`).text(sv.frequency);
 
         // Need to add sv.frequency to sv.time - moment.js?
-        let currentTime = moment().format(`x`);
+        let currentTime = moment().format(`HH:mm`);
         console.log(currentTime);
-        let startUni = moment(`${sv.time}`, `x`);
-        console.log(startUni);
-        let difference = new moment().diff(sv.time, `m`);
-        //console.log(difference);
-        //let nextTrain = moment(`${sv.time}`).format(`HH:mm`).add(sv.frequency, `m`);
+        let timeConversion = moment(sv.time, `HH:mm`).subtract(1, `years`);
+        console.log(timeConversion);
+        let difference = moment().diff(moment(timeConversion), `m`);
+        console.log(difference);
+        let remainder = difference % sv.frequency;
+        console.log(remainder);
         //.format(`HH:mm`);
                                                 
         //console.log(nextTrain);
