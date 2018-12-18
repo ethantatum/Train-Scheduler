@@ -47,26 +47,24 @@ $(document).ready(function() {
         let pDest = $(`<p>`).text(sv.destination);
         let pFreq = $(`<p>`).text(sv.frequency);
 
-        // Need to add sv.frequency to sv.time - moment.js?
-        let currentTime = moment().format(`HH:mm`);
-        console.log(currentTime);
+        // Converting stored start time using moment.js; subtracting a year to ensure time is not ahead of current time
         let timeConversion = moment(sv.time, `HH:mm`).subtract(1, `years`);
-        console.log(timeConversion);
+        
+        // Calculating difference between current time and converted start time
         let difference = moment().diff(moment(timeConversion), `m`);
-        console.log(difference);
+        
+        // Calculating the remainder (minutes) by dividing the difference in minutes by the frequency of trains
         let remainder = difference % sv.frequency;
-        console.log(remainder);
+        
+        // Calculating the minutes to the next train by subtracting the remaining minutes from the frequency
         let minutesToTrain = sv.frequency - remainder;
-        console.log(minutesToTrain);
-        let nextTrain = moment().add(minutesToTrain, `minutes`);
-        console.log(nextTrain);
-
-        let pNext = $(`<p>`).text(moment(nextTrain).format(`HH:mm`));
         let pMinutes = $(`<p>`).text(minutesToTrain);
-                                       
-      
 
+        // Calculating time of next train arrival by adding number of minutes remaining to current time
+        let nextTrain = moment().add(minutesToTrain, `minutes`);
+        let pNext = $(`<p>`).text(moment(nextTrain).format(`HH:mm`));
 
+        // Appending our values to the HTML
         $(`#train-name`).append(pTrain);
         $(`#destination`).append(pDest);
         $(`#frequency`).append(pFreq);

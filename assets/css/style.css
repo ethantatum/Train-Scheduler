@@ -5,3 +5,9 @@
 .jumbotron {
     font-family: 'Ultra', serif;
 }
+
+.background-image {
+    background-image: url('../images/tracks.jpg');
+    background-repeat: repeat-y;
+    opacity: 0.95;
+}
