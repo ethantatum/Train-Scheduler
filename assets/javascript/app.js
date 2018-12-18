@@ -17,17 +17,12 @@ $(document).ready(function() {
     $("#add-train").on("click", function(event) {
         // Don't refresh the page!
         event.preventDefault();
-
+        
         // Stores data for the most recent train
         let trainName = $(`#name-input`).val().trim();
         let destination = $(`#destination-input`).val().trim();
         let firstTime = $(`#time-input`).val().trim();
         let frequency = $(`#frequency-input`).val().trim();
-
-        console.log(trainName);
-        console.log(destination);
-        console.log(firstTime);
-        console.log(frequency);
         
         // Provides initial data to Firebase database
         database.ref().push({
@@ -37,7 +32,11 @@ $(document).ready(function() {
             time: firstTime,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         }); // Closes database.ref.push function
-
+        
+        $(`#name-input`).val(``);
+        $(`#destination-input`).val(``);
+        $(`#time-input`).val(``)
+        $(`#frequency-input`).val(``)
     }); // Closes on-click function
 
     // Firebase watcher + initial loader
@@ -57,22 +56,22 @@ $(document).ready(function() {
         console.log(difference);
         let remainder = difference % sv.frequency;
         console.log(remainder);
-        //.format(`HH:mm`);
-                                                
-        //console.log(nextTrain);
-        //let pTime = $(`<p>`).text(nextTrain);
+        let minutesToTrain = sv.frequency - remainder;
+        console.log(minutesToTrain);
+        let nextTrain = moment().add(minutesToTrain, `minutes`);
+        console.log(nextTrain);
 
-        // Need to subtract nextTrain time from current time to get minutes away
-        //let minutesAway = new moment().format(`HH:mm`) - (nextTrain);
-        //console.log(minutesAway);
-        //let pAway = $(`<p>`).text(minutesAway);
+        let pNext = $(`<p>`).text(moment(nextTrain).format(`HH:mm`));
+        let pMinutes = $(`<p>`).text(minutesToTrain);
+                                       
+      
 
 
         $(`#train-name`).append(pTrain);
         $(`#destination`).append(pDest);
         $(`#frequency`).append(pFreq);
-        //$(`#next-arrival`).append(pTime);
-        //$(`#minutes-away`).append(pAway);
+        $(`#next-arrival`).append(pNext);
+        $(`#minutes-away`).append(pMinutes);
         // Create Error Handling
         }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
